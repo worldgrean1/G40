@@ -6,7 +6,7 @@ import { Zap, Settings, Monitor, Thermometer } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import StaticInverterNode from "@/components/static-nodes/inverter"
+import ResponsiveInverterWrapper from "@/components/inverter/responsive-wrapper"
 import { CardBorderPowerFlow } from "@/components/animations/card-border-power-flow"
 
 export function InverterShowcase() {
@@ -49,22 +49,18 @@ export function InverterShowcase() {
 
             {/* Centered container for the inverter */}
             <div className="relative z-10 w-full h-full flex items-center justify-center">
-              <div className="relative" style={{ width: "320px", height: "472px" }}>
-                <StaticInverterNode
-                  position={{ x: 160, y: 236 }}
-                  inverterOn={inverterOn}
-                  onInverterChange={setInverterOn}
-                  gridConnected={false}
-                  solarConnected={true}
-                  batteryConnected={true}
-                  loadPercentage={65}
-                  batteryLevel={85}
-                  temperature={42}
-                  fanSpeed={35}
-                  mode="pv"
-                  scale={0.8}
-                />
-              </div>
+              <ResponsiveInverterWrapper
+                inverterOn={inverterOn}
+                onInverterChange={setInverterOn}
+                gridConnected={false}
+                solarConnected={true}
+                batteryConnected={true}
+                loadPercentage={65}
+                batteryLevel={85}
+                temperature={42}
+                fanSpeed={35}
+                mode="pv"
+              />
             </div>
           </div>
 
@@ -85,7 +81,7 @@ export function InverterShowcase() {
               <div className="p-4 rounded-lg py-4 shadow-lg bg-slate-800/50 backdrop-blur-sm border border-[#3DD56D]/20">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2">
                   <div className="text-center">
-                    <div className="text-xl sm:text-2xl font-bold text-[#3DD56D]">3kW</div>
+                    <div className="text-xl sm:text-2xl font-bold text-[#3DD56D]">High</div>
                     <div className="text-xs text-slate-300">Max Power</div>
                   </div>
                   <div className="text-center">
@@ -169,3 +165,5 @@ export function InverterShowcase() {
     </section>
   )
 }
+
+export default InverterShowcase;

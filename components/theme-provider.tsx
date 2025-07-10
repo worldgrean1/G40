@@ -5,6 +5,7 @@ import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
 } from 'next-themes';
+import { useTheme } from '@/hooks/useTheme';
 
 // Brand-compatible theme provider that maintains existing API
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
@@ -13,39 +14,15 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
-// Create a simple brand theme hook that works with next-themes
+// Brand theme hook that wraps the main useTheme hook for backward compatibility
+// This eliminates duplication while maintaining the existing API
 export function useBrandTheme() {
-  const [mounted, setMounted] = React.useState(false);
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-
-    // Check current theme from document class
-    const updateTheme = () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setIsDarkMode(isDark);
-    };
-
-    updateTheme();
-
-    // Listen for theme changes
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { isDark, theme, setTheme, mounted } = useTheme();
 
   return {
-    isDarkMode: mounted ? isDarkMode : false, // Default to light during SSR
-    theme: mounted ? (isDarkMode ? 'dark' : 'light') : 'light',
-    setTheme: (theme: 'light' | 'dark') => {
-      document.documentElement.classList.remove('light', 'dark');
-      document.documentElement.classList.add(theme);
-      setIsDarkMode(theme === 'dark');
-    }
+    isDarkMode: isDark, // Map isDark to isDarkMode for backward compatibility
+    theme: theme || 'light',
+    setTheme,
+    mounted
   };
 }

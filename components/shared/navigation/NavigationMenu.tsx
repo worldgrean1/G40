@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEnergySystemStore } from '@/store/energySystemStore';
+import { useEnergySystemStore } from '@/utils/energy-simulation';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTheme } from '@/hooks/useTheme';
 import {
@@ -218,8 +218,9 @@ export function NavigationMenu() {
   }, [throttledScrollHandler, handleScroll, handleMouseMove, isGreenPage]);
 
   const handlePowerOff = () => {
-    // Only turn off the switch, leave inverter state unchanged
+    // Turn off both switch and inverter for complete power off
     setSwitchActive(false);
+    setInverterActive(false);
 
     // Add a small delay to ensure the state is updated before redirecting
     setTimeout(() => {

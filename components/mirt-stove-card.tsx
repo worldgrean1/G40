@@ -6,6 +6,7 @@ import { Flame, BarChart3, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 export function MirtStoveCard() {
   const [ref, inView] = useInView({
@@ -155,10 +156,12 @@ export function MirtStoveCard() {
             {/* Visual Section */}
             <div className="w-full lg:w-[45%] relative overflow-hidden flex items-center justify-center min-h-[200px] sm:min-h-[250px] lg:min-h-0 p-4">
               <div className="absolute inset-0 bg-gradient-to-l from-[#3DD56D]/80 to-transparent z-0"></div>
-              <div className="absolute inset-0 z-10 flex items-center justify-center">
+
+              {/* Ripple Animation - Behind product image */}
+              <div className="absolute inset-0 z-5 flex items-center justify-center">
                 <div className="relative w-full h-full max-w-[300px] max-h-[300px] sm:max-w-[350px] sm:max-h-[350px]">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    {/* Animated Rings */}
+                    {/* Animated Rings - Behind product image */}
                     <div
                       className={cn(
                         "w-full h-full max-w-[280px] max-h-[280px] rounded-full bg-[#3DD56D]/20 transition-all duration-500",
@@ -179,16 +182,30 @@ export function MirtStoveCard() {
                       )}
                       style={{ animationDelay: "1s" }}
                     ></div>
+                  </div>
+                </div>
+              </div>
 
-                    {/* Central Icon */}
-                    <div
-                      className={cn(
-                        "absolute w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-[#2bb757]/60 flex items-center justify-center shadow-lg transition-all duration-700",
-                        animatedRings >= 1 ? "scale-100 opacity-100" : "scale-50 opacity-0",
-                      )}
-                    >
-                      <Flame className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
-                    </div>
+              {/* Product Image Overlay - In front of ripple animation */}
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <div className="relative w-full h-full max-w-[280px] max-h-[280px] sm:max-w-[320px] sm:max-h-[320px] opacity-80">
+                  <Image
+                    src="/images/Mirt-Stove.png"
+                    alt="Mirt Stove Deluxe Product"
+                    fill
+                    className="object-contain filter drop-shadow-lg"
+                    style={{
+                      filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3))',
+                    }}
+                    priority
+                  />
+                </div>
+              </div>
+
+              {/* Decorative Elements Only - Top layer */}
+              <div className="absolute inset-0 z-20 flex items-center justify-center">
+                <div className="relative w-full h-full max-w-[300px] max-h-[300px] sm:max-w-[350px] sm:max-h-[350px]">
+                  <div className="absolute inset-0 flex items-center justify-center">
 
                     {/* Decorative Elements */}
                     <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 400 400">

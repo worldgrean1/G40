@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { playButtonClickSound } from '@/utils/sound';
 import { useRouter } from 'next/navigation';
+import { BREAKPOINTS } from '../../constants/breakpoints';
 // Inline Wall Switch Component
 function InlineWallSwitch({
   isOn,
@@ -194,7 +195,7 @@ export default function StaticSwitchNode({
   const getResponsiveDimensions = () => {
     if (typeof window !== 'undefined') {
       const width = window.innerWidth;
-      if (width < 768) {
+      if (width < BREAKPOINTS.md) {
         // Mobile: ensure minimum touch target of 44px
         const minSize = 44;
         const calculatedSize = 128 * scale;

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useInView } from "react-intersection-observer"
-import { SunMedium, Building2, Users, GraduationCap, TrendingUp, Award, Target, Building } from "lucide-react"
+import { SunMedium, Building2, Users, GraduationCap, Award } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useTypewriter } from "@/hooks/useTypewriter"
@@ -10,55 +10,7 @@ import { useTheme } from "@/hooks/useTheme"
 import { GreanCard } from "@/components/ui/grean-card"
 import { GreanButton } from "@/components/ui/grean-button"
 
-// Animated Counter Component
-interface AnimatedCounterProps {
-  value: string | number;
-  suffix?: string;
-  duration?: number;
-  delay?: number;
-  isDark?: boolean;
-}
 
-const AnimatedCounter = ({ value, suffix = "", duration = 2000, delay = 0, isDark = true }: AnimatedCounterProps) => {
-  const [count, setCount] = useState(0)
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
-
-  useEffect(() => {
-    if (inView) {
-      const timer = setTimeout(() => {
-        let start = 0
-        const end = Number.parseInt(value.toString().replace(/\D/g, ""))
-        const increment = end / (duration / 16)
-
-        const counter = setInterval(() => {
-          start += increment
-          if (start >= end) {
-            setCount(end)
-            clearInterval(counter)
-          } else {
-            setCount(Math.floor(start))
-          }
-        }, 16)
-
-        return () => clearInterval(counter)
-      }, delay)
-
-      return () => clearTimeout(timer)
-    }
-  }, [inView, value, duration, delay])
-
-  return (
-    <div ref={ref} className={`text-3xl sm:text-4xl font-bold ${
-      isDark ? 'text-[#3DD56D]' : 'text-small-title'
-    }`}>
-      {count.toLocaleString()}
-      {suffix}
-    </div>
-  )
-}
 
 export function EnergyPillars() {
   const { isDark } = useTheme()
@@ -70,36 +22,7 @@ export function EnergyPillars() {
   // Typing animation for the main heading
   const headingAnimation = useTypewriter("Four Pillars of Energy Excellence", 70, 800, inView)
 
-  const statistics = [
-    {
-      value: "500",
-      suffix: "+",
-      label: "Projects Completed",
-      icon: Target,
-      delay: 0,
-    },
-    {
-      value: "1200",
-      suffix: "+",
-      label: "Professionals Trained",
-      icon: Users,
-      delay: 200,
-    },
-    {
-      value: "40",
-      suffix: "%",
-      label: "Average Cost Savings",
-      icon: TrendingUp,
-      delay: 400,
-    },
-    {
-      value: "25",
-      suffix: "+",
-      label: "Institutions Served",
-      icon: Building,
-      delay: 600,
-    },
-  ]
+
 
   // Brand-compliant pillars using official GREAN WORLD colors
   const pillars = [
@@ -112,7 +35,7 @@ export function EnergyPillars() {
       textColor: "text-[#3DD56D]",
       services: ["Residential", "Smart Communities", "Sustainable Living"],
       description: "Empowering neighborhoods with premium solar energy solutions and smart grid integration.",
-      features: ["Solar energy audits", "Community installations", "Smart grid integration"],
+      features: ["Energy audits", "Engineered renewable energy solutions installation", "Smart grid integration- backup system integration"],
     },
     {
       title: "Commercial Energy Transition",
@@ -191,58 +114,7 @@ export function EnergyPillars() {
         </div>
       </div>
 
-      {/* Premium Statistics Section */}
-      <div
-        className={cn(
-          "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 transition-all duration-1000 delay-300",
-          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
-        )}
-      >
-        {statistics.map((stat, index) => {
-          const Icon = stat.icon
-          return (
-            <GreanCard
-              key={index}
-              pattern="none"
-              gradient={false}
-              className={cn(
-                "p-6 text-center group transition-all duration-500 hover:scale-105 hover:shadow-xl",
-                "border-2 hover:border-[#3DD56D]/50",
-                isDark
-                  ? "bg-slate-900/90 border-slate-700/50 hover:bg-slate-800/90 shadow-lg"
-                  : "bg-white/90 border-gray-200/50 hover:bg-gray-50/90 shadow-md",
-                "backdrop-blur-sm"
-              )}
-              style={{
-                animationDelay: `${stat.delay}ms`,
-              }}
-            >
-              {/* Premium gradient overlay */}
-              <div className={cn(
-                "absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                "bg-gradient-to-br from-[#3DD56D]/5 via-[#2bb757]/3 to-[#23A455]/5"
-              )} />
 
-              <div className="relative z-10">
-                <div className="mb-4 flex justify-center">
-                  <div className={cn(
-                    "p-3 rounded-full transition-all duration-300",
-                    "bg-gradient-to-br from-[#3DD56D]/20 to-[#2bb757]/20",
-                    "group-hover:from-[#3DD56D]/30 group-hover:to-[#2bb757]/30",
-                    "group-hover:scale-110 group-hover:shadow-lg"
-                  )}>
-                    <Icon className="w-6 h-6 text-[#3DD56D] group-hover:text-[#2bb757] transition-colors duration-300" />
-                  </div>
-                </div>
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} delay={stat.delay} isDark={isDark} />
-                <div className={`typography-small mt-2 transition-colors duration-300 ${
-                  isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-700'
-                }`}>{stat.label}</div>
-              </div>
-            </GreanCard>
-          )
-        })}
-      </div>
 
       {/* Premium Pillars Grid */}
       <div

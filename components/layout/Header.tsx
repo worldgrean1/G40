@@ -9,16 +9,19 @@ import { useBrandTheme } from '@/components/theme-provider';
 
 interface HeaderProps {
   scrolled: boolean;
+  transparent?: boolean;
 }
 
-export default function Header({ scrolled }: HeaderProps) {
+export default function Header({ scrolled, transparent = false }: HeaderProps) {
   const { switchActive } = useEnergySystemStore();
   const { isDarkMode } = useBrandTheme();
 
   return (
     <motion.header
       className={`py-3 px-4 sm:px-6 transition-all duration-500 ${
-        scrolled
+        transparent
+          ? ''
+          : scrolled
           ? isDarkMode
             ? 'bg-slate-900/90 backdrop-blur-md border-b border-grean-primary/10'
             : 'bg-white/90 backdrop-blur-md border-b border-grean-secondary/10'
@@ -52,19 +55,21 @@ export default function Header({ scrolled }: HeaderProps) {
                     height={48}
                     className="object-contain"
                   />
-                  <motion.div
-                    className={`absolute inset-0 rounded-full ${
-                      isDarkMode ? 'bg-grean-primary/20' : 'bg-grean-secondary/20'
-                    }`}
-                    animate={{
-                      opacity: [0.2, 0.5, 0.2],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: 'easeInOut',
-                    }}
-                  />
+                  {!transparent && (
+                    <motion.div
+                      className={`absolute inset-0 rounded-full ${
+                        isDarkMode ? 'bg-grean-primary/20' : 'bg-grean-secondary/20'
+                      }`}
+                      animate={{
+                        opacity: [0.2, 0.5, 0.2],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  )}
                 </div>
               </motion.div>
 
@@ -133,6 +138,7 @@ export default function Header({ scrolled }: HeaderProps) {
               'REDUCING CARBON FOOTPRINT SINCE 2015',
               '24/7 CUSTOMER SUPPORT: +251-911-123456',
             ]}
+            transparent={transparent}
           />
         </div>
       </div>
