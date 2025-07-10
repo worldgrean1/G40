@@ -6,6 +6,7 @@ import { Logo } from '@/components/shared/navigation/Logo';
 import GreenIntro from './components/sections/GreenIntro';
 import GreenHome from './components/sections/GreenHome';
 import GreenFooter from './components/sections/GreenFooter';
+import { InverterShowcase } from '@/components/inverter-showcase';
 import { OptimizedLoadingScreen } from './components/shared/OptimizedLoadingScreen';
 import { motion } from 'framer-motion';
 import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
@@ -251,18 +252,8 @@ const OptimizedGreenSolutions = () => {
   );
 };
 
-const OptimizedInverterShowcase = () => {
-  return (
-    <RobustLazyComponent
-      importFn={() => import('@/components/inverter-showcase').then(module => ({ default: module.InverterShowcase }))}
-      priority="high"
-      rootMargin="100px"
-      fallback={
-        <div className="min-h-[400px] animate-pulse rounded-lg my-8 bg-slate-200/40 dark:bg-slate-800/40" />
-      }
-    />
-  );
-};
+// Use direct import for InverterShowcase to avoid chunk loading issues
+const OptimizedInverterShowcase = () => <InverterShowcase />;
 
 const OptimizedGreenProducts = () => {
   return (
@@ -304,7 +295,7 @@ const GreenPage = () => {
   const { isLowPerformance } = usePerformanceMonitor();
   const { isDark, isLight } = useTheme();
 
-  // Disable click sound effects for the green page
+  // Disable click sound effects for the green page and enable scrolling
   useEffect(() => {
     // Disable button click sounds on this page
     setPageSoundPreferences({
@@ -315,9 +306,15 @@ const GreenPage = () => {
       morningSunshine: true,
     });
 
+    // Add data attribute to enable scrolling on green page
+    document.documentElement.setAttribute('data-page', 'green');
+    document.body.setAttribute('data-page', 'green');
+
     // Cleanup function to restore default sound settings when leaving the page
     return () => {
       clearPageSoundPreferences();
+      document.documentElement.removeAttribute('data-page');
+      document.body.removeAttribute('data-page');
     };
   }, []);
 

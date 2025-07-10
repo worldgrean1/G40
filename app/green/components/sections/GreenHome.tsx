@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { SunMedium, Leaf, Wind, Zap, ArrowRight } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
-import { useBrandTheme } from '@/components/theme-provider';
 import { GreanButton } from '@/components/ui/grean-button';
 import { GreanCard } from '@/components/ui/grean-card';
 import { TypingTextAnimation } from '@/components/animations/text/TypingTextAnimation';
+
 
 // OFFICIAL Brand CSS from Brand Guidelines - EXACT Implementation
 const brandCSS = `
@@ -59,7 +59,6 @@ const brandCSS = `
 export default function GreenHome() {
   const [isVisible, setIsVisible] = useState(false);
   const { isDark, isLight } = useTheme();
-  const { isDarkMode } = useBrandTheme();
 
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -96,7 +95,7 @@ export default function GreenHome() {
 
       {/* Brand Gradient Overlay */}
       <div className={`absolute inset-0 ${
-        isDarkMode
+        isDark
           ? 'bg-gradient-to-br from-[#3dd56d]/5 via-transparent to-[#2bb757]/5'
           : 'bg-gradient-to-br from-[#2bb757]/10 via-transparent to-[#23a455]/10'
       }`} />
@@ -124,14 +123,14 @@ export default function GreenHome() {
         ))}
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 h-full flex items-center justify-center min-h-screen">
-        <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 h-full flex items-center justify-center min-h-screen">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
+            className="space-y-6 lg:space-y-8 text-center lg:text-left"
           >
 
 
@@ -140,20 +139,20 @@ export default function GreenHome() {
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4 }}
-              className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border mb-8 typography-small ${
-                isDarkMode
+              className={`inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium border mb-8 typography-small ${
+                isDark
                   ? 'bg-[#3dd56d]/20 text-[#3dd56d] border-[#3dd56d]/30'
                   : 'bg-[#2bb757]/20 text-[#2bb757] border-[#2bb757]/50'
               }`}
             >
-              <SunMedium className="mr-2 h-4 w-4" />
+              <SunMedium className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               Powering a Sustainable Future
             </motion.div>
 
-            {/* BRAND COMPLIANT Main Title - Following 60-30-10 Rule */}
-            <div className="space-y-6">
-              <h1 className={`text-6xl md:text-7xl lg:text-8xl font-black leading-none tracking-tight flex flex-col sm:flex-row items-center justify-center gap-2 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
+            {/* BRAND COMPLIANT Main Title - Responsive */}
+            <div className="space-y-4 lg:space-y-6">
+              <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-tight ${
+                isDark ? 'text-white' : 'text-gray-900'
               }`}>
                 <TypingTextAnimation
                   text="Building a Greener Future Together"
@@ -163,24 +162,24 @@ export default function GreenHome() {
               </h1>
 
               {/* BRAND COMPLIANT Subtitle with Official Typography */}
-              <div className="space-y-4">
-                <p className="text-xl typography-h3 text-[#2bb757]">
+              <div className="space-y-3">
+                <p className="text-base sm:text-lg lg:text-xl typography-h3 text-[#2bb757]">
                   Transforming <span className="text-[#3dd56d] font-semibold">20 Villages</span> into Green Villages by 2030.
                 </p>
-                <p className={`text-lg max-w-2xl typography-body ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}>
+                <p className={`text-sm sm:text-base lg:text-lg max-w-2xl typography-body ${
+                  isDark ? 'text-gray-300' : 'text-gray-700'
+                } mx-auto lg:mx-0`}>
                   Leading Ethiopia's energy transition with <span className={`font-semibold text-[#23a455]`}>sustainable, reliable, and affordable innovations</span>.
                 </p>
               </div>
             </div>
 
-            {/* Brand-Compliant Action Buttons */}
+            {/* Brand-Compliant Action Buttons - Responsive */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 mt-8"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6"
             >
               <motion.div
                 whileHover={{
@@ -192,10 +191,10 @@ export default function GreenHome() {
                 <GreanButton
                   variant="primary"
                   size="lg"
-                  className="flex items-center justify-center min-w-[200px]"
+                  className="flex items-center justify-center w-full sm:min-w-[200px] py-3 text-sm sm:text-base"
                 >
                   Explore Solutions
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </GreanButton>
               </motion.div>
 
@@ -209,56 +208,58 @@ export default function GreenHome() {
                 <GreanButton
                   variant="outline"
                   size="lg"
-                  className="flex items-center justify-center min-w-[200px]"
+                  className="flex items-center justify-center w-full sm:min-w-[200px] py-3 text-sm sm:text-base"
                 >
                   Contact Us
                 </GreanButton>
               </motion.div>
             </motion.div>
 
-            {/* Trust Indicators */}
+            {/* Trust Indicators - Responsive */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={isVisible ? { opacity: 1 } : {}}
               transition={{ delay: 1 }}
-              className="flex items-center space-x-6"
+              className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6"
             >
-              <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Trusted by:</span>
-              <div className="flex space-x-4">
+              <span className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Trusted by:
+              </span>
+              <div className="flex space-x-3 sm:space-x-4">
                 {[SunMedium, Leaf, Wind, Zap].map((Icon, index) => (
                   <div
                     key={index}
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${
                       isDark
                         ? 'bg-[#3dd56d]/20'
                         : 'bg-[#2bb757]/10 border border-[#2bb757]/30'
                     }`}
                   >
-                    <Icon className={`h-5 w-5 ${isDark ? 'text-[#3dd56d]' : 'text-[#2bb757]'}`} />
+                    <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${isDark ? 'text-[#3dd56d]' : 'text-[#2bb757]'}`} />
                   </div>
                 ))}
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Right Visual - Brand-Compliant GreanCard */}
+          {/* Right Visual - Responsive */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative"
+            className="relative mt-8 lg:mt-0"
           >
-            <div className="relative w-full h-96 lg:h-[500px]">
-              {/* New Solar Panel Design from HTML */}
+            <div className="relative w-full h-64 sm:h-80 lg:h-96 xl:h-[500px] max-w-sm sm:max-w-md lg:max-w-none mx-auto">
+              {/* Solar Panel Design - Responsive */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="relative w-full h-full max-w-[350px] max-h-[300px] sm:max-w-[400px] sm:max-h-[350px] mx-auto"
+                className="relative w-full h-full max-w-[280px] max-h-[200px] sm:max-w-[350px] sm:max-h-[250px] lg:max-w-[400px] lg:max-h-[300px] mx-auto"
               >
                 <div className="absolute inset-0 flex items-center justify-center">
                   {/* Solar Panel Grid Container */}
-                  <div className="relative w-full h-full max-w-[280px] max-h-[200px] sm:max-w-[350px] sm:max-h-[250px] md:max-w-[400px] md:max-h-[300px] rounded-xl overflow-hidden shadow-2xl z-0">
+                  <div className="relative w-full h-full max-w-[240px] max-h-[160px] sm:max-w-[280px] sm:max-h-[200px] lg:max-w-[350px] lg:max-h-[250px] xl:max-w-[400px] xl:max-h-[300px] rounded-xl overflow-hidden shadow-2xl z-0">
                     {/* Glow Effect - ORIGINAL COLORS */}
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-[#3DD56D]/30 to-[#2bb757]/30 opacity-30 blur-sm rounded-xl" />
 
@@ -266,7 +267,7 @@ export default function GreenHome() {
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0c253a] to-[#071221] border border-slate-700/50" />
 
                     {/* Solar Panel Grid - 4x4 */}
-                    <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-1 p-2 sm:p-3">
+                    <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-1 p-1.5 sm:p-2 lg:p-3">
                       {[...Array(16)].map((_, i) => (
                         <div
                           key={i}
@@ -326,45 +327,45 @@ export default function GreenHome() {
               {/* Brand-Compliant Efficiency Stats */}
               <motion.div
                 className={`absolute -top-4 -right-4 rounded-xl p-4 backdrop-blur-sm ${
-                  isDarkMode
+                  isDark
                     ? 'bg-slate-800/90 shadow-lg'
                     : 'bg-white/90 shadow-lg'
                 }`}
                 style={{
                   borderWidth: '2px',
-                  borderColor: isDarkMode ? '#3dd56d4d' : '#2bb7574d', // 30% opacity
+                  borderColor: isDark ? '#3dd56d4d' : '#2bb7574d', // 30% opacity
                 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 1.2 }}
               >
                 <div className="text-3xl font-bold text-[#3dd56d]">98%</div>
-                <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Efficiency</div>
+                <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Efficiency</div>
                 <div className="flex items-center mt-1">
                   <Zap className="h-4 w-4 mr-1 text-[#2bb757]" />
                   <span className="text-xs text-[#2bb757]">Active</span>
                 </div>
               </motion.div>
 
-              {/* Brand-Compliant Homes Count */}
+              {/* Brand-Compliant Homes Count - Responsive */}
               <motion.div
-                className={`absolute -bottom-4 -right-4 rounded-xl p-4 backdrop-blur-sm ${
-                  isDarkMode
+                className={`absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 rounded-xl p-2 sm:p-3 lg:p-4 backdrop-blur-sm ${
+                  isDark
                     ? 'bg-slate-800/90 shadow-lg'
                     : 'bg-white/90 shadow-lg'
                 }`}
                 style={{
                   borderWidth: '2px',
-                  borderColor: isDarkMode ? '#3dd56d4d' : '#2bb7574d', // 30% opacity
+                  borderColor: isDark ? '#3dd56d4d' : '#2bb7574d',
                 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 1.4 }}
               >
-                <div className="text-2xl font-bold text-[#3dd56d]">5k+</div>
-                <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Homes</div>
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-[#3dd56d]">280k+</div>
+                <div className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Homes</div>
                 <div className="flex items-center mt-1">
-                  <Leaf className="h-4 w-4 mr-1 text-[#2bb757]" />
+                  <Leaf className="h-3 w-3 sm:h-4 sm:w-4 mr-1 text-[#2bb757]" />
                   <span className="text-xs text-[#2bb757]">Powered</span>
                 </div>
               </motion.div>

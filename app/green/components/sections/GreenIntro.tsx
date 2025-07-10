@@ -155,7 +155,7 @@ export default function GreenIntro() {
                 className="relative z-10 object-contain drop-shadow-2xl animate-spin-slow"
               />
             </div>
-            <h1 className={`text-3xl md:text-4xl font-extrabold text-center typography-h1 ${
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold text-center typography-h1 ${
               isDarkMode ? 'text-white' : 'text-gray-900'
             }`}
             style={{
@@ -335,7 +335,7 @@ export default function GreenIntro() {
 
             {/* Main Company Title - POINTER EVENTS AUTO FOR TEXT SELECTION */}
             <motion.div
-              className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tight text-center mb-6 pointer-events-auto typography-display"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-none tracking-tight text-center mb-6 pointer-events-auto typography-display"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: loadingComplete ? 1 : 0, scale: loadingComplete ? 1 : 0.9 }}
               transition={{ duration: 1.2, delay: 0.4 }}
@@ -366,7 +366,7 @@ export default function GreenIntro() {
 
             {/* Clean Tagline - POINTER EVENTS AUTO FOR TEXT SELECTION */}
             <motion.div
-              className="text-xl md:text-2xl lg:text-3xl text-center mb-8 max-w-4xl mx-auto pointer-events-auto typography-h2"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-center mb-8 max-w-4xl mx-auto pointer-events-auto typography-h2"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: loadingComplete ? 1 : 0, y: loadingComplete ? 0 : 30 }}
               transition={{ duration: 1, delay: 0.8 }}

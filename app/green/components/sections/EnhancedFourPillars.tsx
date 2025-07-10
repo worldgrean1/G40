@@ -7,10 +7,7 @@ import {
   Building2,
   GraduationCap,
   School,
-  Target,
-  TrendingUp,
-  Award,
-  Zap
+  Target
 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
@@ -194,50 +191,7 @@ export const EnhancedFourPillars = memo<EnhancedFourPillarsProps>(({
             businesses across Ethiopia.
           </motion.p>
 
-          {/* Enhanced Stats Row */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            {[
-              { value: '500+', label: 'Projects Completed', icon: Award },
-              { value: '1,200+', label: 'Professionals Trained', icon: GraduationCap },
-              { value: '40%', label: 'Average Cost Savings', icon: TrendingUp },
-              { value: '25+', label: 'Institutions Served', icon: Zap },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                className={`text-center p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm group cursor-pointer ${
-                  isDark
-                    ? 'bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-slate-700/60 hover:border-[#3DD56D]/40'
-                    : 'bg-gradient-to-br from-white/95 to-green-50/80 border border-green-300/70 hover:border-green-500/60 shadow-green-100/50'
-                }`}
-                whileHover={!shouldReduceAnimations ? {
-                  scale: 1.05,
-                  y: -5
-                } : {}}
-                whileTap={!shouldReduceAnimations ? { scale: 0.98 } : {}}
-              >
-                <div className="mb-3">
-                  <stat.icon className={`w-6 h-6 mx-auto ${
-                    isDark ? 'text-[#3DD56D]' : 'text-small-title'
-                  } group-hover:scale-110 transition-transform`} />
-                </div>
-                <div className={`text-2xl md:text-3xl font-bold mb-1 ${
-                  isDark ? 'text-[#3DD56D]' : 'text-small-title'
-                }`}>
-                  {stat.value}
-                </div>
-                <div className={`text-xs md:text-sm font-medium ${
-                  isDark ? 'text-gray-300' : 'text-description-text'
-                }`}>
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+
         </div>
 
         {/* Enhanced Four Pillars Cards Grid */}

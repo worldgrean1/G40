@@ -2,7 +2,7 @@
 
 import React, { memo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Award, ShoppingCart, Zap, Leaf, Sun } from 'lucide-react';
+import { Star, Award, Zap, Leaf, Sun } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { PremiumCard } from './PremiumCard';
 
@@ -32,8 +32,6 @@ interface Product {
 
 interface EnhancedProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
-  onViewDetails?: (product: Product) => void;
   className?: string;
 }
 
@@ -94,21 +92,10 @@ ProductBadge.displayName = 'ProductBadge';
 // Main Enhanced Product Card Component
 export const EnhancedProductCard = memo<EnhancedProductCardProps>(({
   product,
-  onAddToCart,
-  onViewDetails,
   className = '',
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { isDark } = useTheme();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onAddToCart?.(product);
-  };
-
-  const handleViewDetails = () => {
-    onViewDetails?.(product);
-  };
 
   const discountPercentage = product.oldPrice 
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
@@ -122,7 +109,6 @@ export const EnhancedProductCard = memo<EnhancedProductCardProps>(({
       glowEffect={true}
       size="lg"
       className={className}
-      onClick={handleViewDetails}
     >
       <div className="flex flex-col h-full">
         {/* Product Badge */}
@@ -269,30 +255,7 @@ export const EnhancedProductCard = memo<EnhancedProductCardProps>(({
                 )}
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2">
-                <motion.button
-                  className="flex-1 bg-gradient-to-r from-[#3dd56d] to-[#4ade80] text-white px-4 py-3 rounded-xl font-semibold text-sm hover:shadow-lg transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleAddToCart}
-                >
-                  <ShoppingCart className="w-4 h-4 inline mr-2" />
-                  Add to Cart
-                </motion.button>
-                <motion.button
-                  className={`px-4 py-3 rounded-xl font-semibold text-sm border-2 transition-all duration-300 ${
-                    isDark 
-                      ? 'border-[#3dd56d] text-[#3dd56d] hover:bg-[#3dd56d]/10' 
-                      : 'border-[#3dd56d] text-[#3dd56d] hover:bg-[#3dd56d]/10'
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleViewDetails}
-                >
-                  Details
-                </motion.button>
-              </div>
+
             </div>
 
             {/* Tags */}

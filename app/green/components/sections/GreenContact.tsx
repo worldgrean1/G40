@@ -217,34 +217,42 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
 
-  // Client-side validation
+  // Enhanced client-side validation with better error messages
   const validateForm = (data: any) => {
     const errors: string[] = [];
 
     // Name validation
     if (!data.name || data.name.toString().trim().length < 2) {
-      errors.push('Please enter your full name (at least 2 characters)');
+      errors.push('📝 Full name is required (minimum 2 characters)');
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!data.email || !emailRegex.test(data.email.toString())) {
-      errors.push('Please enter a valid email address');
+    // Email validation with improved regex
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (!data.email || !emailRegex.test(data.email.toString().trim())) {
+      errors.push('📧 Please enter a valid email address (e.g., name@example.com)');
     }
 
     // Subject validation
     if (!data.subject || data.subject.toString().trim().length < 3) {
-      errors.push('Please enter a subject (at least 3 characters)');
+      errors.push('💬 Subject is required (minimum 3 characters)');
     }
 
     // Interest validation
     if (!data.interest) {
-      errors.push('Please select what you are interested in');
+      errors.push('🎯 Please select what you are interested in from the dropdown');
     }
 
     // Message validation
     if (!data.message || data.message.toString().trim().length < 10) {
-      errors.push('Please enter a message (at least 10 characters)');
+      errors.push('✍️ Message is required (minimum 10 characters to help us understand your needs)');
+    }
+
+    // Phone validation (if provided)
+    if (data.phone && data.phone.toString().trim().length > 0) {
+      const phoneRegex = /^[\+]?[0-9\s\-\(\)]{7,}$/;
+      if (!phoneRegex.test(data.phone.toString().trim())) {
+        errors.push('📞 Please enter a valid phone number (optional field)');
+      }
     }
 
     return errors;
@@ -271,13 +279,13 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
       const validationErrors = validateForm(data);
       if (validationErrors.length > 0) {
         setSubmitStatus('error');
-        setSubmitMessage(`Please fix the following issues:\n• ${validationErrors.join('\n• ')}`);
+        setSubmitMessage(`Please fix the following issues:\n\n${validationErrors.join('\n')}`);
         setIsSubmitting(false);
         return;
       }
 
-      // Show sending message
-      setSubmitMessage('Sending your message...');
+      // Show sending message with progress indicator
+      setSubmitMessage('🚀 Sending your message... Please wait a moment.');
 
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -291,30 +299,30 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
 
       if (response.ok) {
         setSubmitStatus('success');
-        setSubmitMessage('✅ Message sent successfully! We will get back to you within 24 hours. Check your email for confirmation.');
+        setSubmitMessage('🎉 Message sent successfully!\n\n✅ We will get back to you within 24 hours\n📧 Check your email for confirmation\n💚 Thank you for choosing GREAN WORLD!');
         formRef.current?.reset();
 
-        // Auto-hide success message after 10 seconds
+        // Auto-hide success message after 12 seconds
         setTimeout(() => {
           setSubmitStatus('idle');
           setSubmitMessage('');
-        }, 10000);
+        }, 12000);
       } else {
         setSubmitStatus('error');
         if (response.status === 400) {
-          setSubmitMessage(`❌ Form validation failed: ${result.error || 'Please check your input and try again.'}`);
+          setSubmitMessage(`❌ Form validation failed\n\n${result.error || 'Please check your input and try again.'}\n\n💡 Make sure all required fields are filled correctly.`);
         } else if (response.status === 500) {
-          setSubmitMessage('❌ Server error occurred. Please try again later or contact us directly at info@greanworld.com');
+          setSubmitMessage('❌ Server error occurred\n\nPlease try again later or contact us directly:\n📧 info@greanworld.com\n📞 (+251) 913 330000');
         } else {
-          setSubmitMessage(`❌ ${result.error || 'Failed to send message. Please try again.'}`);
+          setSubmitMessage(`❌ ${result.error || 'Failed to send message'}\n\n🔄 Please try again or contact us directly if the problem persists.`);
         }
       }
     } catch (error) {
       setSubmitStatus('error');
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        setSubmitMessage('❌ Network connection error. Please check your internet connection and try again.');
+        setSubmitMessage('🌐 Network connection error\n\n📡 Please check your internet connection and try again.\n\n💡 If you continue to have issues, contact us directly:\n📧 info@greanworld.com\n📞 (+251) 913 330000');
       } else {
-        setSubmitMessage('❌ An unexpected error occurred. Please try again or contact us directly at info@greanworld.com');
+        setSubmitMessage('⚠️ An unexpected error occurred\n\n🔄 Please try again in a moment.\n\n📞 Need immediate assistance?\nCall us at (+251) 913 330000\n📧 Email: info@greanworld.com');
       }
       console.error('Contact form error:', error);
     } finally {
@@ -461,158 +469,108 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                 className="space-y-4 flex-1 flex flex-col"
                 noValidate
               >
+                {/* Full Name and Email Address Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className={`space-y-2 transition-all duration-300 ${
-                    formFields.hasAnimated
-                      ? (formFields.isIntersecting ? 'field-fade-in' : 'card-hidden')
-                      : 'card-hidden'
-                  }`}
-                  style={{ animationDelay: formFields.hasAnimated ? '0.1s' : '0s' }}
-                  >
-                    <label
-                      className={`typography-small text-sm ${
-                        isDark ? 'text-white' : 'text-gray-900'
-                      }`}
-                      htmlFor="name"
-                    >
+                  <div className="space-y-2">
+                    <label className="text-sm text-white font-semibold" htmlFor="name">
                       Full Name
                     </label>
                     <div className="relative group">
                       <input
-                        className={`flex w-full border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm ${
-                          isDark
-                            ? 'text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60'
-                            : 'text-green-900 placeholder:text-green-600/60 bg-white/80 border-green-200/60'
-                        }`}
+                        className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60"
                         id="name"
                         placeholder="Your name"
                         required
                         name="name"
                       />
-                      <div
-                        className={`absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors ${
-                          isDark ? 'text-gray-400' : 'text-green-600/60'
-                        }`}
-                      >
-                        <Users className="h-4 w-4" />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
                       </div>
                     </div>
                   </div>
-                  <div className={`space-y-2 transition-all duration-300 ${
-                    formFields.hasAnimated
-                      ? (formFields.isIntersecting ? 'field-fade-in' : 'card-hidden')
-                      : 'card-hidden'
-                  }`}
-                  style={{ animationDelay: formFields.hasAnimated ? '0.2s' : '0s' }}
-                  >
-                    <label
-                      className={`font-semibold text-sm ${
-                        isDark ? 'text-white' : 'text-small-title'
-                      }`}
-                      htmlFor="email"
-                    >
+                  <div className="space-y-2">
+                    <label className="font-semibold text-sm text-white" htmlFor="email">
                       Email Address
                     </label>
                     <div className="relative group">
                       <input
-                        className={`flex w-full border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm ${
-                          isDark
-                            ? 'text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60'
-                            : 'text-green-900 placeholder:text-green-600/60 bg-white/80 border-green-200/60'
-                        }`}
+                        className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60"
                         id="email"
                         placeholder="Your email"
                         required
                         type="email"
                         name="email"
                       />
-                      <div
-                        className={`absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors ${
-                          isDark ? 'text-gray-400' : 'text-green-600/60'
-                        }`}
-                      >
-                        <Mail className="h-4 w-4" />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* Phone Number and Subject Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-2">
-                    <label
-                      className={`font-semibold text-sm ${
-                        isDark ? 'text-white' : 'text-small-title'
-                      }`}
-                      htmlFor="phone"
-                    >
+                    <label className="font-semibold text-sm text-white" htmlFor="phone">
                       Phone Number
                     </label>
                     <div className="relative group">
                       <input
-                        className={`flex w-full border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm ${
-                          isDark
-                            ? 'text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60'
-                            : 'text-green-900 placeholder:text-green-600/60 bg-white/80 border-green-200/60'
-                        }`}
+                        className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60"
                         id="phone"
                         placeholder="Your phone (optional)"
                         name="phone"
                       />
-                      <div
-                        className={`absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors ${
-                          isDark ? 'text-gray-400' : 'text-green-600/60'
-                        }`}
-                      >
-                        <Phone className="h-4 w-4" />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
                       </div>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label
-                      className={`font-semibold text-sm ${
-                        isDark ? 'text-white' : 'text-small-title'
-                      }`}
-                      htmlFor="subject"
-                    >
+                    <label className="font-semibold text-sm text-white" htmlFor="subject">
                       Subject
                     </label>
                     <div className="relative group">
                       <input
-                        className={`flex w-full border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm ${
-                          isDark
-                            ? 'text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60'
-                            : 'text-green-900 placeholder:text-green-600/60 bg-white/80 border-green-200/60'
-                        }`}
+                        className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] transition-all duration-300 h-12 pl-10 rounded-lg shadow-sm text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60"
                         id="subject"
                         placeholder="How can we help?"
                         required
                         name="subject"
                       />
-                      <div
-                        className={`absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors ${
-                          isDark ? 'text-gray-400' : 'text-green-600/60'
-                        }`}
-                      >
-                        <SunMedium className="h-4 w-4" />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                          <circle cx="12" cy="12" r="4"></circle>
+                          <path d="M12 2v2"></path>
+                          <path d="M12 20v2"></path>
+                          <path d="m4.93 4.93 1.41 1.41"></path>
+                          <path d="m17.66 17.66 1.41 1.41"></path>
+                          <path d="M2 12h2"></path>
+                          <path d="M20 12h2"></path>
+                          <path d="m6.34 17.66-1.41 1.41"></path>
+                          <path d="m19.07 4.93-1.41 1.41"></path>
+                        </svg>
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* I'm Interested In Dropdown */}
                 <div className="space-y-2">
-                  <label
-                    className={`font-semibold text-sm ${
-                      isDark ? 'text-white' : 'text-small-title'
-                    }`}
-                    htmlFor="interest"
-                  >
+                  <label className="font-semibold text-sm text-white" htmlFor="interest">
                     I'm Interested In
                   </label>
                   <div className="relative group">
                     <select
-                      className={`flex w-full border px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-12 pl-10 pr-10 rounded-lg shadow-sm appearance-none ${
-                        isDark
-                          ? 'text-white bg-slate-800/80 border-slate-600/60'
-                          : 'text-green-900 bg-white/80 border-green-200/60'
-                      }`}
+                      className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus:border-[#3DD56D] transition-all duration-300 h-12 pl-10 pr-10 rounded-lg shadow-sm appearance-none text-white bg-slate-800/80 border-slate-600/60"
                       id="interest"
                       name="interest"
                       required
@@ -624,49 +582,44 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                       <option value="business-partnership">Business Partnership</option>
                       <option value="general-inquiry">General Inquiry</option>
                     </select>
-                    <div
-                      className={`absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors pointer-events-none ${
-                        isDark ? 'text-gray-400' : 'text-green-600/60'
-                      }`}
-                    >
-                      <SunMedium className="h-4 w-4" />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 group-focus-within:text-[#3DD56D] transition-colors pointer-events-none text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                      </svg>
                     </div>
-                    <div
-                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none ${
-                        isDark ? 'text-gray-400' : 'text-green-600/60'
-                      }`}
-                    >
-                      <ChevronDown className="h-4 w-4" />
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                        <path d="m6 9 6 6 6-6"></path>
+                      </svg>
                     </div>
                   </div>
                 </div>
+                {/* Your Message Textarea */}
                 <div className="space-y-2 flex-1">
-                  <label
-                    className={`font-semibold text-sm ${
-                      isDark ? 'text-white' : 'text-small-title'
-                    }`}
-                    htmlFor="message"
-                  >
+                  <label className="font-semibold text-sm text-white" htmlFor="message">
                     Your Message
                   </label>
                   <div className="relative group h-full">
                     <textarea
-                      className={`flex w-full border px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus:border-[#3DD56D] focus:ring-[#3DD56D]/30 transition-all duration-300 h-full min-h-[160px] pl-10 pt-3 rounded-lg shadow-sm resize-none ${
-                        isDark
-                          ? 'text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60'
-                          : 'text-green-900 placeholder:text-green-600/60 bg-white/80 border-green-200/60'
-                      }`}
+                      className="flex w-full border px-3 py-2 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3DD56D] focus-visible:ring-offset-2 transition-all duration-300 h-full min-h-[160px] pl-10 pt-3 rounded-lg shadow-sm resize-none text-white placeholder:text-gray-400 bg-slate-800/80 border-slate-600/60"
                       id="message"
                       name="message"
                       placeholder="Tell us more about your needs..."
                       required
                     ></textarea>
-                    <div
-                      className={`absolute left-3 top-3 group-focus-within:text-[#3DD56D] transition-colors ${
-                        isDark ? 'text-gray-400' : 'text-green-600/60'
-                      }`}
-                    >
-                      <Send className="h-4 w-4" />
+                    <div className="absolute left-3 top-3 group-focus-within:text-[#3DD56D] transition-colors text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
+                      </svg>
                     </div>
                   </div>
                 </div>
@@ -732,16 +685,10 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                   </div>
                 )}
 
-                <div
-                  ref={contactButtons.ref}
-                  className="pt-4"
-                >
+                {/* Submit Button */}
+                <div className="pt-4">
                   <button
-                    className={`inline-flex items-center justify-center gap-2 whitespace-nowrap text-lg font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 px-4 py-2 text-white w-full group relative overflow-hidden rounded-full h-14 shadow-lg hover:shadow-xl bg-gradient-to-r from-[#3DD56D] to-[#2bb757] hover:from-[#2bb757] hover:to-[#3DD56D] focus-visible:ring-[#3DD56D] ${
-                      contactButtons.hasAnimated
-                        ? (contactButtons.isIntersecting ? 'card-pulse' : 'card-hidden')
-                        : 'card-hidden'
-                    }`}
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-lg font-bold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 px-4 py-2 text-white w-full group relative overflow-hidden rounded-full h-14 shadow-lg hover:shadow-xl bg-gradient-to-r from-[#3DD56D] to-[#2bb757] hover:from-[#2bb757] hover:to-[#3DD56D] focus-visible:ring-[#3DD56D] hover:scale-105"
                     type="submit"
                     disabled={isSubmitting}
                   >
@@ -758,7 +705,10 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                         <>
                           Send Message
                           <span className="ml-2">
-                            <Send className="h-4 w-4" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                              <path d="m22 2-7 20-4-9-9-4Z"></path>
+                              <path d="M22 2 11 13"></path>
+                            </svg>
                           </span>
                         </>
                       )}
@@ -938,18 +888,7 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                             (+251) 913 330000
                           </a>
                         </p>
-                        <p
-                          className={`text-sm mb-3 font-medium ${
-                            isDark ? 'text-gray-300' : 'text-green-700'
-                          }`}
-                        >
-                          <a
-                            href="tel:+251910212989"
-                            className="hover:text-[#3DD56D] transition-colors border-b border-dashed hover:border-[#3DD56D] border-gray-400"
-                          >
-                            (+251) 910 212989
-                          </a>
-                        </p>
+
                         <p
                           className={`text-sm ${
                             isDark ? 'text-gray-400' : 'text-green-600'
@@ -958,6 +897,93 @@ export default function GreenContact({ noSeam = false }: GreenContactProps) {
                           🕒 Mon-Fri: 8am - 5pm
                         </p>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Social Media */}
+                  <div className="flex items-start group hover:scale-105 transition-transform duration-300">
+                    <div
+                      className={`p-4 rounded-xl mr-4 mt-1 shadow-lg backdrop-blur-sm group-hover:shadow-xl transition-all duration-300 ${
+                        isDark
+                          ? 'bg-gradient-to-br from-slate-700/80 to-slate-800/60 border border-slate-600/50'
+                          : 'bg-gradient-to-br from-green-100/80 to-green-50/60 border border-green-200/50'
+                      }`}
+                    >
+                      <Users className="h-6 w-6 text-[#3DD56D]" />
+                    </div>
+                    <div className="flex-1">
+                      <p
+                        className={`font-semibold text-lg mb-3 ${
+                          isDark ? 'text-white' : 'text-green-900'
+                        }`}
+                      >
+                        🌐 Follow Us
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <p
+                          className={`text-sm font-medium ${
+                            isDark ? 'text-gray-300' : 'text-green-700'
+                          }`}
+                        >
+                          <a
+                            href="https://linkedin.com/company/greanworld"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#3DD56D] transition-colors border-b border-dashed hover:border-[#3DD56D] border-gray-400"
+                          >
+                            LinkedIn: @greanworld
+                          </a>
+                        </p>
+                        <p
+                          className={`text-sm font-medium ${
+                            isDark ? 'text-gray-300' : 'text-green-700'
+                          }`}
+                        >
+                          <a
+                            href="https://twitter.com/GreanWorld"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#3DD56D] transition-colors border-b border-dashed hover:border-[#3DD56D] border-gray-400"
+                          >
+                            Twitter: @GreanWorld
+                          </a>
+                        </p>
+                        <p
+                          className={`text-sm font-medium ${
+                            isDark ? 'text-gray-300' : 'text-green-700'
+                          }`}
+                        >
+                          <a
+                            href="https://facebook.com/greanworld.et"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#3DD56D] transition-colors border-b border-dashed hover:border-[#3DD56D] border-gray-400"
+                          >
+                            Facebook: @greanworld.et
+                          </a>
+                        </p>
+                        <p
+                          className={`text-sm font-medium ${
+                            isDark ? 'text-gray-300' : 'text-green-700'
+                          }`}
+                        >
+                          <a
+                            href="https://instagram.com/greanworldet"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#3DD56D] transition-colors border-b border-dashed hover:border-[#3DD56D] border-gray-400"
+                          >
+                            Instagram: @greanworldet
+                          </a>
+                        </p>
+                      </div>
+                      <p
+                        className={`text-sm mt-3 ${
+                          isDark ? 'text-gray-400' : 'text-green-600'
+                        }`}
+                      >
+                        🚀 Stay updated with our latest news
+                      </p>
                     </div>
                   </div>
                 </div>

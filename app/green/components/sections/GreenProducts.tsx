@@ -194,7 +194,7 @@ import ProductImagePlaceholder from '@/components/ui/ProductImagePlaceholder';
 import { useTheme } from '@/hooks/useTheme';
 import { EnhancedProductCard } from '../cards/EnhancedProductCard';
 import { MirtStoveCard } from '@/components/mirt-stove-card';
-import { AdvancedProductComparison } from '../comparison/AdvancedProductComparison';
+
 import { TypingTextAnimation } from '@/components/animations/text/TypingTextAnimation';
 
 
@@ -406,7 +406,7 @@ function SolarHomeSystemCard() {
           "transform transition-all duration-1000",
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
         )}
-        aria-label="Premium card featuring Solar Home System 200W"
+        aria-label="Premium card featuring Solar Home System"
         role="img"
       >
         <div className="absolute inset-0 opacity-10" aria-hidden="true">
@@ -503,7 +503,7 @@ function SolarHomeSystemCard() {
                 <div>
                   <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mb-3 bg-green-600 text-white border-green-600/30">Solar Energy</span>
                   <h3 className="text-2xl sm:text-3xl font-black leading-tight mb-4 text-white">
-                    Solar Home System 200W
+                    Solar Home System
                   </h3>
                   <p className="text-base sm:text-lg font-medium text-slate-300">
                     Our flagship solar home system with everything needed to power a small household, including
@@ -514,17 +514,14 @@ function SolarHomeSystemCard() {
                 <div className="p-4 rounded-lg py-4 shadow-lg bg-slate-800/50 backdrop-blur-sm border border-slate-700">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2">
                     <div className="text-center">
-                      <div className="text-xl sm:text-2xl font-bold text-green-400">200W</div>
+                      <div className="text-xl sm:text-2xl font-bold text-green-400">Solar</div>
                       <div className="text-xs text-slate-300">Panel Power</div>
                     </div>
                     <div className="text-center">
                       <div className="text-xl sm:text-2xl font-bold text-green-400">2 yrs</div>
                       <div className="text-xs text-slate-300">Warranty</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-xl sm:text-2xl font-bold text-green-400">ETB 16,499</div>
-                      <div className="text-xs text-slate-300">Price</div>
-                    </div>
+
                   </div>
                 </div>
 
@@ -536,7 +533,7 @@ function SolarHomeSystemCard() {
                         <div className="bg-white/20 p-2 rounded-full">
                           <SunMedium className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
-                        <span className="text-sm sm:text-base text-white font-medium">200W solar panel</span>
+                        <span className="text-sm sm:text-base text-white font-medium">Solar panel</span>
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="bg-white/20 p-2 rounded-full">
@@ -633,7 +630,6 @@ export default function GreenProducts({ noSeam = false }: GreenProductsProps) {
   const filtersSection = useIntersectionObserver();
   const productGrid = useIntersectionObserver();
   const mirtStoveSection = useIntersectionObserver();
-  const comparisonSection = useIntersectionObserver();
 
   // Inject brand CSS
   useEffect(() => {
@@ -786,7 +782,7 @@ export default function GreenProducts({ noSeam = false }: GreenProductsProps) {
         </button>
       </div>
 
-      {/* Premium Solar Home System 200W Card - Original from Backup */}
+      {/* Premium Solar Home System Card - Original from Backup */}
       <SolarHomeSystemCard />
 
       {/* Premium Mirt Stove Deluxe Card - Original from Backup */}
@@ -1378,42 +1374,7 @@ export default function GreenProducts({ noSeam = false }: GreenProductsProps) {
                       {/* Spacer to push buttons to bottom */}
                       <div className="flex-grow"></div>
 
-                      {/* Enhanced Action Buttons */}
-                      <div className="flex gap-2 mb-3 mt-auto">
-                        <motion.button
-                          onClick={() => {
-                            console.log('Add to cart:', product.name);
-                          }}
-                          className={`flex-1 text-white px-3 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r ${categoryStyle.gradient} hover:${categoryStyle.hoverGradient} ${categoryStyle.shadowColor} shadow-lg`}
-                          whileHover={{
-                            scale: 1.02,
-                            y: -2,
-                          }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5-6m0 0L4 5M7 13h10m0 0l1.5 6M17 13l1.5 6" />
-                          </svg>
-                          Add to Cart
-                        </motion.button>
-                        <motion.button
-                          onClick={() => {
-                            console.log('View details:', product.name);
-                          }}
-                          className={`px-3 py-3 rounded-xl font-bold text-sm border-2 transition-all duration-300 ${
-                            isDark
-                              ? 'bg-slate-800/50 border-slate-600 text-slate-300 hover:bg-[#3DD56D] hover:border-[#3DD56D] hover:text-white'
-                              : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-[#3DD56D] hover:border-[#3DD56D] hover:text-white'
-                          }`}
-                          whileHover={{
-                            scale: 1.02,
-                            y: -2,
-                          }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Details
-                        </motion.button>
-                      </div>
+
                     </div>
 
                     {/* Enhanced Category Footer */}
@@ -1469,7 +1430,7 @@ export default function GreenProducts({ noSeam = false }: GreenProductsProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span>Discover More Products</span>
+              <span>View All Products</span>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:rotate-45 ${
                 isDark ? 'bg-[#3DD56D]/30 group-hover:bg-[#3DD56D]/50' : 'bg-white/20 group-hover:bg-white/30'
               }`}>
@@ -1544,21 +1505,7 @@ export default function GreenProducts({ noSeam = false }: GreenProductsProps) {
         </div>
       </section>
 
-      {/* Advanced Product Comparison Section */}
-      <div
-        ref={comparisonSection.ref}
-        className={`transition-all duration-300 ${
-          comparisonSection.hasAnimated
-            ? (comparisonSection.isIntersecting ? 'card-fade-in-scale' : 'card-slide-down')
-            : 'card-hidden'
-        }`}
-        style={{ animationDelay: comparisonSection.hasAnimated ? '0.4s' : '0s' }}
-      >
-        <AdvancedProductComparison
-          products={products}
-          className=""
-        />
-      </div>
+
       </div>
     </div>
   );

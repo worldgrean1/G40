@@ -37,7 +37,31 @@ export const getProducts = async (): Promise<Product[]> => {
 // Essential products for initial render (reduce to top 6 most important)
 export const essentialProducts: Product[] = [
   {
-    name: 'Household Solar System 200W',
+    name: 'Mirt Stove Deluxe',
+    category: 'cooking-lower',
+    subcategory: 'Injera Baking',
+    price: 2500,
+    rating: 4.7,
+    tags: ['CleanCooking', 'Injera', 'EcoStove', 'Efficient'],
+    description:
+      'The enhanced Mirt stove is made from durable sand and cement mortar, designed for Ethiopian households to bake injera efficiently and reduce fuel use.',
+    sale: false,
+    oldPrice: null,
+    badge: 'ECO-FRIENDLY',
+    targetUsers: ['Ethiopian households', 'Rural communities', 'Traditional cooking'],
+    applications: [
+      'Injera baking',
+      'Traditional cooking',
+      'Fuel-efficient cooking',
+    ],
+    specifications: {
+      capacity: 'Bakes up to 30 injeras per day',
+      efficiency: '50% fuel savings',
+      warranty: '5 years lifespan with proper maintenance',
+    },
+  },
+  {
+    name: 'Household Solar System',
     category: 'solar-pv',
     subcategory: 'Residential',
     price: 16500,
@@ -51,20 +75,19 @@ export const essentialProducts: Product[] = [
     targetUsers: ['Rural households', 'Off-grid communities'],
     applications: ['Home lighting', 'Phone charging', 'Small appliances'],
     specifications: {
-      power: '200W solar panel',
       capacity: '100Ah battery',
       warranty: '5 years panels, 2 years battery',
     },
   },
   {
-    name: 'Electric Induction Cooktop',
+    name: 'Electric Induction Cookstove',
     category: 'cooking-higher',
     subcategory: 'Electric Stoves',
     price: 4500,
     rating: 4.8,
     tags: ['Electric', 'Zero Emissions', 'Modern'],
     description:
-      'High-efficiency electric induction cooktop with precise temperature control and minimal emissions.',
+      'High-efficiency electric induction cookstove with precise temperature control and minimal emissions.',
     sale: false,
     oldPrice: null,
     badge: 'PREMIUM',
@@ -81,7 +104,7 @@ export const essentialProducts: Product[] = [
     },
   },
   {
-    name: 'Solar Water Pump 500W',
+    name: 'Solar Water Pump',
     category: 'pue',
     subcategory: 'Water Pumping',
     price: 28000,
@@ -95,13 +118,12 @@ export const essentialProducts: Product[] = [
     targetUsers: ['Smallholder farmers', 'Agricultural cooperatives'],
     applications: ['Irrigation', 'Livestock watering', 'Garden watering'],
     specifications: {
-      power: '500W solar pump',
       capacity: '2000L/hour flow rate',
       warranty: '3 years',
     },
   },
   {
-    name: 'Solar Street Light 30W',
+    name: 'Solar Street Light',
     category: 'street-lights',
     subcategory: 'Standard',
     price: 8500,
@@ -115,13 +137,12 @@ export const essentialProducts: Product[] = [
     targetUsers: ['Municipalities', 'Communities', 'Private developments'],
     applications: ['Street lighting', 'Pathway lighting', 'Public spaces'],
     specifications: {
-      power: '30W LED light',
       capacity: '12V 40Ah battery',
       warranty: '3 years',
     },
   },
   {
-    name: 'Home Backup System 1kW',
+    name: 'Home Backup System',
     category: 'power-backup',
     subcategory: 'Residential',
     price: 45000,
@@ -135,7 +156,6 @@ export const essentialProducts: Product[] = [
     targetUsers: ['Homeowners', 'Small businesses', 'Clinics'],
     applications: ['Power outages', 'Essential appliances', 'Emergency power'],
     specifications: {
-      power: '1000W inverter',
       capacity: '200Ah battery bank',
       warranty: '3 years inverter, 2 years battery',
     },

@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Leaf, Sparkles, ArrowRight } from 'lucide-react';
+import { Leaf, Sparkles, ArrowRight, Shield, Users, Heart, Target } from 'lucide-react';
 
 import { useTheme } from '@/hooks/useTheme';
 import { GreanButton } from '@/components/ui/grean-button';
 import { GreanCard } from '@/components/ui/grean-card';
 import { TypingTextAnimation } from '@/components/animations/text/TypingTextAnimation';
 import { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Official Brand CSS from Brand Guidelines
 const brandCSS = `
@@ -193,8 +194,9 @@ const useIntersectionObserver = (options = {}) => {
 
 export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
   const { isDark } = useTheme();
+  const isMobile = useIsMobile();
 
-  // Animation states for different card sections
+  // Animation states for different card sections (disabled on mobile)
   const mainCard = useIntersectionObserver();
   const distributionCards = useIntersectionObserver();
   const impactCards = useIntersectionObserver();
@@ -268,7 +270,181 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
         </motion.p>
       </motion.div>
 
+      {/* Video Card - Face of Resilience */}
+      <motion.div
+        className="w-full max-w-7xl mx-auto rounded-2xl shadow-2xl overflow-hidden relative z-10 mb-8 sm:mb-12 lg:mb-16"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.8 }}
+      >
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          onLoadStart={() => console.log('Video loading started')}
+          onCanPlay={() => console.log('Video can play')}
+          onError={(e) => {
+            console.warn('Video failed to load. Using fallback background.');
+            console.warn('Error details:', e);
+            // Hide video element if it fails to load
+            e.currentTarget.style.display = 'none';
+          }}
+          onLoadedData={() => {
+            console.log('Video data loaded successfully');
+          }}
+        >
+          <source type="video/mp4" src="/media/GREAN-VIDOE.mp4" />
+          {/* Additional source formats for better compatibility */}
+          <source type="video/webm" src="/media/GREAN-VIDOE.webm" />
+          <source type="video/ogg" src="/media/GREAN-VIDOE.ogv" />
+          {/* Fallback message for browsers that don't support video */}
+          Your browser does not support the video tag.
+        </video>
 
+        {/* Enhanced Fallback Background - Always present as backup */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 z-0"
+             style={{
+               backgroundImage: `
+                 radial-gradient(circle at 30% 70%, rgba(61, 213, 109, 0.15) 0%, transparent 50%),
+                 radial-gradient(circle at 70% 30%, rgba(43, 183, 87, 0.15) 0%, transparent 50%),
+                 radial-gradient(circle at 50% 50%, rgba(35, 164, 85, 0.1) 0%, transparent 70%),
+                 linear-gradient(135deg, rgba(61, 213, 109, 0.05) 0%, rgba(43, 183, 87, 0.05) 50%, rgba(35, 164, 85, 0.05) 100%)
+               `
+             }}
+        ></div>
+
+        {/* Corner Decorations */}
+        <div className="absolute inset-0 z-5 pointer-events-none">
+          <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-[#3DD56D]/60"></div>
+          <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-[#3DD56D]/60"></div>
+          <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-[#3DD56D]/60"></div>
+          <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-[#3DD56D]/60"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#3DD56D]/40 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#3DD56D]/40 to-transparent"></div>
+        </div>
+
+        {/* Content Overlay */}
+        <div className="flex flex-col h-full relative z-20">
+          {/* Header */}
+          <div className="p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-4">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3DD56D] flex items-center justify-center">
+                <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg sm:text-xl typography-h3 tracking-wide text-white">
+                  <span className="font-bold">GREAN WORLD</span> Energy
+                </h3>
+                <p className="text-xs sm:text-sm typography-small text-slate-300">Clean Energy Solutions</p>
+              </div>
+            </div>
+            <div className="rounded-lg px-3 py-1.5 flex items-center space-x-2 self-start sm:self-auto bg-slate-800/80 backdrop-blur-sm border border-slate-700">
+              <Target className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
+              <p className="text-xs sm:text-sm font-medium text-white">Resilience Hub</p>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-grow flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 lg:p-8 gap-6 lg:gap-8">
+            {/* Left Content */}
+            <div className="max-w-xl text-center lg:text-left mb-6 lg:mb-0 flex-1">
+              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium mb-3 bg-white/20 backdrop-blur-sm text-white">
+                Face of Resilience
+              </span>
+
+              {/* Main Message Card */}
+              <div className="p-4 sm:p-5 rounded-lg mb-4 shadow-lg bg-gradient-to-r from-[#2bb757] to-[#23A455] text-white overflow-hidden relative">
+                <div className="relative z-10">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Target className="w-5 h-5 text-white" />
+                    <h4 className="text-lg sm:text-xl typography-h3 text-white">Face of Resilience</h4>
+                  </div>
+                  <p className="text-sm sm:text-base typography-body mb-2 text-white">"This is the face of resilience."</p>
+                  <p className="text-xs sm:text-sm typography-small text-white/90 mb-3">Barefoot, bold, and building a better tomorrow.</p>
+                  <p className="text-xs sm:text-sm typography-body text-white/95">
+                    At GREAN WORLD, we stand with the hardworking people who power Ethiopia from the ground up—literally.
+                  </p>
+                </div>
+              </div>
+
+              {/* Info Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-3 rounded-lg bg-slate-800/50 backdrop-blur-sm border border-slate-700">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#3DD56D]" />
+                    <h5 className="typography-small text-sm text-white">Our Commitment</h5>
+                  </div>
+                  <ul className="text-xs typography-small space-y-1 list-disc list-inside text-slate-300">
+                    <li>Clean energy solutions</li>
+                    <li>Solar systems for communities</li>
+                    <li>Clean cooking technology</li>
+                    <li>Support for those who need it most</li>
+                  </ul>
+                </div>
+
+                <div className="p-3 rounded-lg bg-slate-800/50 backdrop-blur-sm border border-slate-700">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-[#3DD56D]" />
+                    <h5 className="typography-small text-sm text-white">Beyond Struggle</h5>
+                  </div>
+                  <p className="text-xs typography-small text-slate-300 mb-2">
+                    They deserve more than struggle—they deserve opportunity.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-[#3DD56D]">280k+</div>
+                      <div className="text-xs typography-small text-slate-300">Systems deployed</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-[#2bb757]">500+</div>
+                      <div className="text-xs typography-small text-slate-300">Villages reached</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Visual Element */}
+            <div className="flex-1 flex items-center justify-center relative min-h-[250px] sm:min-h-[300px] lg:min-h-0">
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <div className="relative w-[80%] h-[80%]">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-72 h-72 rounded-full bg-green-600/20 animate-pulse"></div>
+                    <div className="absolute w-56 h-56 rounded-full bg-green-600/30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                    <div className="absolute w-40 h-40 rounded-full bg-green-600/40 animate-pulse" style={{animationDelay: '1s'}}></div>
+                    <div className="absolute w-24 h-24 rounded-full bg-green-600/50 flex items-center justify-center">
+                      <Heart className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-auto pt-4 p-4 sm:p-6 lg:p-8 gap-4 flex-shrink-0">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-[#3DD56D] text-[#3DD56D] bg-transparent">
+                #Resilience
+              </div>
+              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-[#2bb757] text-[#2bb757] bg-transparent">
+                #Opportunity
+              </div>
+              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-[#23A455] text-[#23A455] bg-transparent">
+                #CleanEnergy
+              </div>
+            </div>
+            <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white bg-gradient-to-r from-[#3DD56D] to-[#2bb757] hover:shadow-lg hover:shadow-[#3DD56D]/30">
+              Join Our Mission
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Card-Style-A Design - Following GreenSolutions Mobile Patterns */}
       <div
@@ -436,7 +612,7 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
                       </h5>
                     </div>
                     <ul className="typography-small space-y-1 sm:space-y-2 list-disc list-inside text-slate-300">
-                      <li><span className="text-[#2bb757]">10Wp-350Wp</span> solar home systems</li>
+                      <li>Solar home systems</li>
                       <li>Lighting, phone charging, TV support</li>
                       <li>Professional installation included</li>
                       <li>Local maintenance & training</li>
@@ -453,10 +629,10 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
                     <div className="grid grid-cols-2 gap-2">
                       <div className="text-center">
                         <div className="text-lg sm:text-xl font-bold text-[#3dd56d]">
-                          270k+
+                          280k+
                         </div>
                         <div className="typography-small text-slate-300">
-                          Systems deployed
+                          clean cooking stoves
                         </div>
                       </div>
                       <div className="text-center">
@@ -746,7 +922,7 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
             }`}
             style={{ animationDelay: impactCards.hasAnimated ? '0.1s' : '0s' }}
           >
-            <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">270k+</div>
+            <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">280k+</div>
             <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Solar Systems</div>
             <div className="typography-small text-gray-600 dark:text-gray-400">Deployed across Ethiopia</div>
           </GreanCard>
@@ -794,6 +970,65 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
           </GreanCard>
         </div>
 
+        {/* Four Pillars Excellence Metrics */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12">
+          {/* Projects Completed */}
+          <GreanCard
+            className={`p-6 text-center transition-all duration-300 ${
+              impactCards.hasAnimated
+                ? (impactCards.isIntersecting ? 'card-slide-in-left' : 'card-slide-out-left')
+                : 'card-hidden'
+            }`}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.5s' : '0s' }}
+          >
+            <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">500+</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Projects Completed</div>
+            <div className="typography-small text-gray-600 dark:text-gray-400">Successful implementations</div>
+          </GreanCard>
+
+          {/* Professionals Trained */}
+          <GreanCard
+            className={`p-6 text-center transition-all duration-300 ${
+              impactCards.hasAnimated
+                ? (impactCards.isIntersecting ? 'card-slide-in-bottom' : 'card-slide-out-bottom')
+                : 'card-hidden'
+            }`}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.6s' : '0s' }}
+          >
+            <div className="text-4xl sm:text-5xl font-bold text-[#2bb757] mb-2">1,200+</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Professionals Trained</div>
+            <div className="typography-small text-gray-600 dark:text-gray-400">Skilled workforce developed</div>
+          </GreanCard>
+
+          {/* Average Cost Savings */}
+          <GreanCard
+            className={`p-6 text-center transition-all duration-300 ${
+              impactCards.hasAnimated
+                ? (impactCards.isIntersecting ? 'card-slide-in-bottom' : 'card-slide-out-bottom')
+                : 'card-hidden'
+            }`}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.7s' : '0s' }}
+          >
+            <div className="text-4xl sm:text-5xl font-bold text-[#23a455] mb-2">40%</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Average Cost Savings</div>
+            <div className="typography-small text-gray-600 dark:text-gray-400">Energy cost reduction</div>
+          </GreanCard>
+
+          {/* Institutions Served */}
+          <GreanCard
+            className={`p-6 text-center transition-all duration-300 ${
+              impactCards.hasAnimated
+                ? (impactCards.isIntersecting ? 'card-slide-in-right' : 'card-slide-out-right')
+                : 'card-hidden'
+            }`}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.8s' : '0s' }}
+          >
+            <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">25+</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Institutions Served</div>
+            <div className="typography-small text-gray-600 dark:text-gray-400">Organizations partnered</div>
+          </GreanCard>
+        </div>
+
         {/* Impact Stories */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <GreanCard
@@ -813,10 +1048,6 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
               <div className="text-center">
                 <div className="text-2xl font-bold text-[#2bb757]">200+</div>
                 <div className="typography-small text-gray-600 dark:text-gray-400">Women Entrepreneurs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-[#23a455]">$2.5M</div>
-                <div className="typography-small text-gray-600 dark:text-gray-400">Income Generated</div>
               </div>
             </div>
           </GreanCard>

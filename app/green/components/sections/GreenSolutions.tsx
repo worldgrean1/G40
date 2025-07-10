@@ -691,7 +691,7 @@ export default function GreenSolutions({
                                 </h5>
                               </div>
                               <ul className="text-xs typography-small space-y-1 list-disc list-inside text-slate-300">
-                                <li>10Wp-350Wp solar home systems</li>
+                                <li>Solar home systems</li>
                                 <li>Lighting, phone charging, TV support</li>
                                 <li>Professional installation included</li>
                                 <li>Local maintenance & training</li>
@@ -707,10 +707,10 @@ export default function GreenSolutions({
                               <div className="grid grid-cols-2 gap-2">
                                 <div className="text-center">
                                   <div className="text-lg sm:text-xl font-bold text-[#3DD56D]">
-                                    270k+
+                                    280k+
                                   </div>
                                   <div className="text-xs typography-small text-slate-300">
-                                    Systems deployed
+                                    clean cooking stoves
                                   </div>
                                 </div>
                                 <div className="text-center">
