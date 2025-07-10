@@ -5,9 +5,13 @@
  * Helps diagnose and fix common chunk loading issues
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const NEXT_DIR = path.join(PROJECT_ROOT, '.next');
@@ -221,11 +225,11 @@ Examples:
   }
 }
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-module.exports = {
+export {
   checkNextBuild,
   analyzeChunks,
   checkBuildManifest,

@@ -32,7 +32,6 @@
 
 /* Eco-tech glass effect */
 .eco-glass {
-  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   border: none !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);

@@ -7,7 +7,6 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    './docs/grean-world-brand-assets-v2.0-complete/components/**/*.{ts,tsx}',
     '*.{js,ts,jsx,tsx,mdx}',
   ],
   prefix: '',
@@ -18,6 +17,14 @@ const config: Config = {
       screens: {
         '2xl': '1400px',
       },
+    },
+    screens: {
+      'xs': '475px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
     },
     extend: {
       backgroundImage: {
@@ -92,6 +99,9 @@ const config: Config = {
           'secondary-light': '#23A455',
           'accent-light': '#1e7e34',
         },
+      },
+      fontFamily: {
+        'led': ['Digital-7', 'monospace'],
       },
       borderRadius: {
         lg: 'var(--radius)',

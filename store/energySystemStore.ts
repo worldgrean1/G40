@@ -50,24 +50,16 @@ export const useEnergySystemStore = create<EnergySystemState>((set, get) => ({
     set(state => ({
       ...state,
       inverterActive: active,
-      switchActive: active ? state.switchActive : false,
       showHeroSection: active,
       showTagSection: active,
       animationPhase: active ? 1 : 0, // Animation phase depends only on inverter state
     })),
 
   setSwitchActive: active =>
-    set(state => {
-      // Only allow switch activation if inverter is active
-      if (!state.inverterActive) {
-        return state;
-      }
-      // Maintain animation phase regardless of switch state
-      return {
-        ...state,
-        switchActive: active,
-      };
-    }),
+    set(state => ({
+      ...state,
+      switchActive: active,
+    })),
 
   setShowHeroSection: show =>
     set(state => ({
@@ -103,7 +95,6 @@ export const useEnergySystemStore = create<EnergySystemState>((set, get) => ({
     set(state => ({
       ...state,
       inverterActive: true,
-      switchActive: true,
       showHeroSection: true,
       showTagSection: true,
       animationPhase: 1,
@@ -113,7 +104,6 @@ export const useEnergySystemStore = create<EnergySystemState>((set, get) => ({
     set(state => ({
       ...state,
       inverterActive: false,
-      switchActive: false,
       showHeroSection: false,
       showTagSection: false,
       animationPhase: 0,

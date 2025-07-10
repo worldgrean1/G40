@@ -1,9 +1,23 @@
 /** @type {import('next').NextConfig} */
-import bundleAnalyzer from '@next/bundle-analyzer'
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Bundle analyzer - conditional import for production compatibility
+let withBundleAnalyzer;
+
+try {
+  const bundleAnalyzer = (await import('@next/bundle-analyzer')).default;
+  withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE === 'true',
+  });
+} catch (error) {
+  // Fallback if bundle analyzer is not available
+  console.warn('Bundle analyzer not available, using fallback');
+  withBundleAnalyzer = (config) => config;
+}
 
 const nextConfig = {
   // Build configuration
@@ -15,12 +29,15 @@ const nextConfig = {
   },
   experimental: {
     typedRoutes: false,
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
+    scrollRestoration: true,
   },
 
   // Image optimization - disabled for Netlify compatibility
   images: {
     unoptimized: true,
     domains: ['my.spline.design', 'prod.spline.design'],
+    formats: ['image/webp', 'image/avif'],
   },
 
   // Transpile packages for better compatibility
@@ -32,8 +49,19 @@ const nextConfig = {
   // Trailing slash configuration
   trailingSlash: false,
 
+  // Performance optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
   // Webpack configuration
   webpack: (config, { isServer, dev }) => {
+    // Fix path aliases for production builds
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': __dirname,
+    };
+
     // Framer Motion optimization
     config.module.rules.push({
       test: /framer-motion/,
@@ -140,11 +168,6 @@ const nextConfig = {
   // Environment variables
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
-
-  // Experimental features for better performance
-  experimental: {
-    scrollRestoration: true,
   },
 
   // Compression

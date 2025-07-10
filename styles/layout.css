@@ -6,7 +6,6 @@ body {
 }
 
 .eco-glass {
-  background: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -124,7 +123,7 @@ body {
 }
 
 /* Media queries */
-@media (max-width: 1280px) {
+@media (max-width: 1279px) {
   .content-wrapper {
     width: 100%;
     max-width: 1098.56px;
@@ -136,7 +135,7 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .content-wrapper {
     width: 100%;
     min-height: 100vh;
@@ -173,7 +172,7 @@ body {
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .footer-content {
     flex-direction: column;
     text-align: center;
@@ -232,7 +231,7 @@ body {
 }
 
 /* Feature buttons */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .feature-buttons {
     flex-wrap: wrap;
     justify-content: center;
@@ -241,7 +240,7 @@ body {
 }
 
 /* Hero section */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .hero-content {
     padding: 2rem 1rem;
   }
@@ -291,7 +290,7 @@ body {
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .background-element {
     opacity: 0.5;
   }
