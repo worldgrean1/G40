@@ -912,7 +912,7 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-8 mb-12">
           {/* Impact Metric 1 */}
           <GreanCard
             className={`p-6 text-center transition-all duration-300 ${
@@ -923,18 +923,32 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
             style={{ animationDelay: impactCards.hasAnimated ? '0.1s' : '0s' }}
           >
             <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">280k+</div>
-            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Solar Systems</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Clean Cooking Stoves</div>
             <div className="typography-small text-gray-600 dark:text-gray-400">Deployed across Ethiopia</div>
           </GreanCard>
 
-          {/* Impact Metric 2 */}
+          {/* Impact Metric 2 - Solar Home Systems */}
+          <GreanCard
+            className={`p-6 text-center transition-all duration-300 ${
+              impactCards.hasAnimated
+                ? (impactCards.isIntersecting ? 'card-slide-in-left' : 'card-slide-out-left')
+                : 'card-hidden'
+            }`}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.15s' : '0s' }}
+          >
+            <div className="text-4xl sm:text-5xl font-bold text-[#2bb757] mb-2">11k+</div>
+            <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Solar Home Systems</div>
+            <div className="typography-small text-gray-600 dark:text-gray-400">Deployed across Ethiopia</div>
+          </GreanCard>
+
+          {/* Impact Metric 3 */}
           <GreanCard
             className={`p-6 text-center transition-all duration-300 ${
               impactCards.hasAnimated
                 ? (impactCards.isIntersecting ? 'card-slide-in-bottom' : 'card-slide-out-bottom')
                 : 'card-hidden'
             }`}
-            style={{ animationDelay: impactCards.hasAnimated ? '0.2s' : '0s' }}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.25s' : '0s' }}
           >
             <div className="text-4xl sm:text-5xl font-bold text-[#2bb757] mb-2">500+</div>
             <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Villages</div>
@@ -948,7 +962,7 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
                 ? (impactCards.isIntersecting ? 'card-slide-in-bottom' : 'card-slide-out-bottom')
                 : 'card-hidden'
             }`}
-            style={{ animationDelay: impactCards.hasAnimated ? '0.3s' : '0s' }}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.35s' : '0s' }}
           >
             <div className="text-4xl sm:text-5xl font-bold text-[#23a455] mb-2">1.2M</div>
             <div className="typography-h3 mb-2 text-gray-900 dark:text-white">People</div>
@@ -962,7 +976,7 @@ export default function GreenAbout({ noSeam = false }: GreenAboutProps) {
                 ? (impactCards.isIntersecting ? 'card-slide-in-right' : 'card-slide-out-right')
                 : 'card-hidden'
             }`}
-            style={{ animationDelay: impactCards.hasAnimated ? '0.4s' : '0s' }}
+            style={{ animationDelay: impactCards.hasAnimated ? '0.45s' : '0s' }}
           >
             <div className="text-4xl sm:text-5xl font-bold text-[#3dd56d] mb-2">30k</div>
             <div className="typography-h3 mb-2 text-gray-900 dark:text-white">Tons CO₂</div>
